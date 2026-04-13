@@ -25,42 +25,14 @@ coinMarketCap_etl_pipeline/
 
 ## ⚙️ Pipeline Flow
 
-```
-  CoinMarketCap Pro API
-  /v1/cryptocurrency/listings/latest
-  (top 5000 coins, converted to USD)
-            │
-            ▼
-      [ extract.py ]
-      ─────────────────────────────────────────────────
-      • GET request with API key header
-      • Parses JSON response into a pandas DataFrame
-      • Saves raw snapshot → crypto_market_data.csv
-            │
-            ▼
-     [ transform.py ]
-      ─────────────────────────────────────────────────
-      • Drops 7 columns:
-          quote, tags, tvl_ratio, platform,
-          self_reported_circulating_supply,
-          self_reported_market_cap, minted_market_cap
-      • Removes rows with any null values
-      • Removes duplicate rows
-            │
-            ▼
-       [ load.py ]
-      ─────────────────────────────────────────────────
-      • Connects to Aiven PostgreSQL
-      • Bulk-inserts 12 fields per record via executemany()
-      • Target table: crypto.crypto_market_data
-      • Commits and closes connection cleanly
-            │
-            ▼
-       [ main.py ]
-      ─────────────────────────────────────────────────
-      • Single entry point: python main.py
-      • Logs record counts after each step
-```
+## ⚙️ Pipeline Flow
+
+| Step | Script           | Phase                 | What It Does                                                                                                                                                                                                                             |
+| ---- | ---------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | `extract.py`   | **Extract**     | Sends a GET request to `CoinMarketCap Pro API /v1/cryptocurrency/listings/latest`with a limit of 5000 coins converted to USD · Parses the JSON response into a pandas DataFrame · Saves a raw snapshot to `crypto_market_data.csv` |
+| 2    | `transform.py` | **Transform**   | Drops 7 irrelevant columns:`quote`,`tags`,`tvl_ratio`,`platform`,`self_reported_circulating_supply`,`self_reported_market_cap`,`minted_market_cap`· Removes rows containing any null values · Removes duplicate rows     |
+| 3    | `load.py`      | **Load**        | Connects to Aiven PostgreSQL · Bulk-inserts 12 fields per record into `crypto.crypto_market_data`using `executemany()`· Commits the transaction and closes the connection cleanly                                                  |
+| 4    | `main.py`      | **Orchestrate** | Single entry point (`python main.py`) that calls all three steps in sequence · Logs record counts after extraction and transformation                                                                                                 |
 
 ---
 
