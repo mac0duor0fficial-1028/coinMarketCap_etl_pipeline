@@ -148,7 +148,7 @@ DB_HOST=your_aiven_host.aivencloud.com
 DB_PORT=14233
 ```
 
-> ⚠️ `.env` is listed in `.gitignore` and will never be pushed to GitHub.
+> ⚠️ `.env` is listed in `.gitignore` and is pushed to GitHub.
 
 ### 5. Run the pipeline
 
