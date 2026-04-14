@@ -1,4 +1,4 @@
-# 📊 CoinMarketCap ETL Pipeline
+#  CoinMarketCap ETL Pipeline
 
 > A modular Python ETL pipeline that extracts live cryptocurrency market data from the CoinMarketCap Pro API, cleans and standardises it, and bulk-loads it into a cloud-hosted PostgreSQL database on Aiven.
 
@@ -22,8 +22,6 @@ coinMarketCap_etl_pipeline/
 ```
 
 ---
-
-## ⚙️ Pipeline Flow
 
 ## ⚙️ Pipeline Flow
 
