@@ -189,4 +189,4 @@ uv add package-name
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](https://claude.ai/chat/LICENSE).
+This project is open source and available under the [MIT License](https://MIT/LICENSE).
